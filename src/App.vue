@@ -2,20 +2,26 @@
   <div>
     <SearchBar @termChange="onTermChange"></SearchBar>
     <VideoList></VideoList>
+    {{ videos.length }}
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import SearchBar from "./components/SearchBar";
-import VideoList from './components/VideoList';
+import VideoList from "./components/VideoList";
 const API_KEY = "AIzaSyAVccO5IEnvZ-VhsA8wfX7LRKfxKiww8IE";
 
 export default {
   name: "App",
   components: {
     SearchBar,
-    VideoList
+    VideoList,
+  },
+  data() {
+    return {
+      videos: [],
+    };
   },
   methods: {
     onTermChange(searchTerm) {
@@ -28,7 +34,9 @@ export default {
             q: searchTerm,
           },
         })
-        .then((res) => console.log(res));
+        .then((res) => {
+          this.videos = res.data.items;
+        });
     },
   },
 };
